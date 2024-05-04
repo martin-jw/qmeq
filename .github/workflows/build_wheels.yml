@@ -11,23 +11,26 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-10.15]
+        os: [ubuntu-22.04, windows-2022, macos-12, macos-14]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      # Used to host cibuildwheel
+      - uses: actions/setup-python@v5
+
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel==2.17.0
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v1.11.1.post1
+        run: python -m cibuildwheel --output-dir wheelhouse
         # to supply options, put them in 'env', like:
-        env:
-          CIBW_BEFORE_ALL_MACOS: bash scripts/cibw_before_all_macos.sh
-          CIBW_BUILD: cp36-* cp37-* cp38-* cp39-*
-          CIBW_SKIP: "*-win32 *-manylinux_i686 *aarch64 *ppc64le *s390x *universal2 *arm64"
-          CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest --pyargs qmeq
+        # env:
+        #   CIBW_SOME_OPTION: value
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
       - name: Upload binaries to release

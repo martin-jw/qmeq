@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, windows-2022, macos-11]
+        os: [ubuntu-22.04, windows-2022, macos-12, macos-14]
 
     steps:
       - uses: actions/checkout@v4
@@ -26,11 +26,10 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         # to supply options, put them in 'env', like:
-        env:
-          CIBW_BEFORE_ALL_MACOS: bash scripts/cibw_before_all_macos.sh
-          CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest --pyargs qmeq
+        # env:
+        #   CIBW_SOME_OPTION: value
 
       - uses: actions/upload-artifact@v4
         with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
