@@ -71,30 +71,7 @@ def get_ext_modules():
     return cext
 
 
-long_description = open('README.rst').read()
-
-classifiers = ['Development Status :: 5 - Production/Stable',
-               'Intended Audience :: Science/Research',
-               'License :: OSI Approved :: BSD License',
-               'Operating System :: MacOS',
-               'Operating System :: Microsoft :: Windows',
-               'Operating System :: POSIX',
-               'Operating System :: Unix',
-               'Programming Language :: Cython',
-               'Programming Language :: Python :: 3',
-               'Topic :: Scientific/Engineering :: Physics']
-
-setup(name='qmeq',
-      version='1.1',
-      description=('Package for transport calculations in quantum dots ' +
-                   'using approximate quantum master equations'),
-      long_description=long_description,
-      url='http://github.com/gedaskir/qmeq',
-      author='Gediminas Kirsanskas',
-      author_email='qmeq.package@gmail.com',
-      license='BSD 2-Clause',
-      classifiers=classifiers,
-      packages=['qmeq',
+setup(packages=['qmeq',
                 'qmeq/approach',
                 'qmeq/approach/base',
                 'qmeq/approach/elph',
