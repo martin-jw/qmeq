@@ -1,13 +1,70 @@
-[project]
-requires-python = ">=3.6"
-
-
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools>=69",
     "wheel",
-    "cython",
+    "cython==0.29.37",
     "numpy",
-    "scipy"
+    "scipy<=1.11.4"
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "qmeq"
+version = "1.1"
+dependencies = [
+  "numpy",
+  "scipy<=1.11.4"
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Gediminas Kirsanskas"},
+  {name = "Martin Josefsson"},
+  {name = "Martin Leijnse"},
+  {name = "Andreas Wacker"},
+  {email = "qmeq.package@gmail.com"},
+]
+description="Package for transport calculations in quantum dots using approximate quantum master equations"
+readme = "README.rst"
+license = {file = "LICENSE.md"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Cython",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Physics"
+]
+
+[project.urls]
+Homepage = "http://github.com/gedaskir/qmeq"
+
+[tool.cibuildwheel.macos]
+before-all = "bash scripts/cibw_before_all_macos.sh"
+
+[tool.cibuildwheel]
+# List of Python versions to build
+build = [
+    "cp38-*",
+    "cp39-*",
+    "cp310-*",
+    "cp311-*",
+    "cp312-*"
+]
+# List of builds to skip
+skip = [
+    "*-win32",
+    "*-win_arm64",
+    "*musllinux*",
+    "*i686",
+    "*aarch64",
+    "*ppc64le",
+    "*s390x",
+    "*universal2"
+]
+# Run the package tests using `pytest`
+test-requires = "pytest"
+test-command = "pytest --pyargs qmeq"
